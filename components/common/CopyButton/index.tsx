@@ -31,7 +31,7 @@ interface CopyButtonProps {
  * renders a copy button with a tooltip to indicate whether the text has been
  * copied or not.
  */
-export const CopyButton: React.FC<CopyButtonProps> = ({ text, field }) => {
+export const CopyButton: React.FC<CopyButtonProps> = ({ text }) => {
   /**
    * A state variable to track whether the text has been copied or not.
    * @type {boolean}

@@ -5,6 +5,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Typography,
@@ -132,35 +133,36 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <List sx={{ pt: 2 }}>
           {/* Renders the menu items in the sidebar. */}
           {menuItems.map(item => (
-            <ListItem
-              button
-              key={item.id}
-              selected={selectedPage === item.id}
-              onClick={() => onPageChange(item.id)}
-              sx={{
-                py: 1,
-                px: 2,
-              }}
-            >
-              {/* Renders the menu item icon with dynamic color based
-                             on the selected page. */}
-              <ListItemIcon
+            <ListItem key={item.id} disablePadding>
+              <ListItemButton
+                selected={selectedPage === item.id}
+                onClick={() => onPageChange(item.id)}
                 sx={{
-                  color: selectedPage === item.id ? 'primary.main' : 'inherit',
-                  minWidth: 40,
+                  py: 1,
+                  px: 2,
                 }}
               >
-                {item.icon}
-              </ListItemIcon>
-              {/* Renders the menu item label with dynamic font weight
-               * based on the selected page. */}
-              <ListItemText
-                primary={item.label}
-                primaryTypographyProps={{
-                  fontSize: '0.875rem',
-                  fontWeight: selectedPage === item.id ? 500 : 400,
-                }}
-              />
+                {/* Renders the menu item icon with dynamic color based
+                             on the selected page. */}
+                <ListItemIcon
+                  sx={{
+                    color:
+                      selectedPage === item.id ? 'primary.main' : 'inherit',
+                    minWidth: 40,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                {/* Renders the menu item label with dynamic font weight
+                 * based on the selected page. */}
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    fontSize: '0.875rem',
+                    fontWeight: selectedPage === item.id ? 500 : 400,
+                  }}
+                />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>
