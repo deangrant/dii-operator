@@ -14,7 +14,7 @@ import {
 export const validateEmail = (email: string): EmailValidationResult => {
   // Evaluate if the email address is empty or undefined.
   if (!email) {
-    return { isValid: false, error: 'Email addressis required' };
+    return { isValid: false, error: 'Email address is required' };
   }
 
   // A regular expression to validate the email address format. Allows letters,
