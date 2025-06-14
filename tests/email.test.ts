@@ -31,7 +31,7 @@ describe('Email Validation', () => {
    * addresses. Verifies both empty input and malformed email address cases.
    */
   test('returns error message for invalid emails', () => {
-    expect(validateEmail('').error).toBe('Email is required');
+    expect(validateEmail('').error).toBe('Email address is required');
     expect(validateEmail('invalid').error).toBe(
       'Please enter a valid email address',
     );
