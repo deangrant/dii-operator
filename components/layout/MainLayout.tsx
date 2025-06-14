@@ -17,6 +17,7 @@ import {
 import EmailIcon from '@mui/icons-material/Email';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 /**
  * Defines the width of the permanent sidebar drawer in pixels. This constant is
@@ -75,6 +76,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: <DashboardIcon /> },
     { id: 'email', label: 'Email Address Normalizer', icon: <EmailIcon /> },
+    { id: 'phone', label: 'Phone Number Normalizer', icon: <PhoneIcon /> },
   ];
 
   /**

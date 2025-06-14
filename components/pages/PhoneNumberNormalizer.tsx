@@ -8,18 +8,18 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { useEmailProcessor } from '../../hooks/useEmailProcessor';
+import { usePhoneProcessor } from '../../hooks/usePhoneProcessor';
 import { ResultDisplay } from '../common/ResultDisplay';
 
 /**
- * A component that provides a user interface for normalizing email addresses
+ * A component that provides a user interface for normalizing phone numbers
  * and generating their corresponding hashes. The component allows users to
- * input an email address, normalize it, and generate a SHA-256 hash of the
- * normalized email.
+ * input a phone number, normalize it, and generate a SHA-256 hash of the
+ * normalized phone number.
  *
- * @returns {JSX.Element} - The rendered email address normalizer component.
+ * @returns {JSX.Element} - The rendered phone number normalizer component.
  */
-export const EmailNormalizer: React.FC = () => {
+export const PhoneNumberNormalizer: React.FC = () => {
   /**
    * The theme object provides access to the application's color palette,
    * typography, and other design properties. It is used to style the
@@ -28,26 +28,32 @@ export const EmailNormalizer: React.FC = () => {
   const theme = useTheme();
 
   /**
-   * Custom hook that handles email processing logic. It provides the email
-   * address, error, and result states, as well as the functions to process
-   * the email address and clear the results.
+   * Custom hook that handles phone number processing logic. It provides the phone
+   * number, error, and result states, as well as the functions to process
+   * the phone number and clear the results.
    */
-  const { email, setEmail, error, result, processEmail, clearResults } =
-    useEmailProcessor();
+  const {
+    phoneNumber,
+    setPhoneNumber,
+    error,
+    result,
+    processPhone,
+    clearResults,
+  } = usePhoneProcessor();
 
   /**
-   * Renders the email address normalizer component. The component consists of
+   * Renders the phone number normalizer component. The component consists of
    * a header section, an input section, and a results section. The header
-   * section contains the title and description of the email address
-   * normalizer. The input section contains the email address input field and
-   * the action buttons. The results section contains the normalized email
-   * address and the SHA-256 hash.
+   * section contains the title and description of the phone number
+   * normalizer. The input section contains the phone number input field and
+   * the action buttons. The results section contains the normalized phone
+   * number and the SHA-256 hash.
    *
-   * @returns {JSX.Element} - The rendered email address normalizer component.
+   * @returns {JSX.Element} - The rendered phone number normalizer component.
    */
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      {/* Renders the header section of the email address normalizer
+      {/* Renders the header section of the phone number normalizer
        * component. */}
       <Box>
         <Typography
@@ -59,10 +65,10 @@ export const EmailNormalizer: React.FC = () => {
             mb: 2,
           }}
         >
-          Email Address Normalizer
+          Phone Number Normalizer
         </Typography>
 
-        {/* Renders the description of the email address normalizer. */}
+        {/* Renders the description of the phone number normalizer. */}
         <Typography
           variant="body1"
           sx={{
@@ -72,14 +78,14 @@ export const EmailNormalizer: React.FC = () => {
             lineHeight: 1.5,
           }}
         >
-          An email hash is a Base64-encoded SHA-256 hash of a normalized email
-          address. The email address is first normalized, then hashed using the
-          SHA-256 hashing algorithm, and then the resulting bytes of the hash
-          value are encoded using Base64 encoding.
+          A phone number hash is a Base64-encoded SHA-256 hash of a normalized
+          phone number. The phone number is first normalized, then hashed using
+          the SHA-256 hashing algorithm, and then the resulting bytes of the
+          hash value are encoded using Base64 encoding
         </Typography>
       </Box>
 
-      {/* Renders the input section of the email address normalizer
+      {/* Renders the input section of the phone number normalizer
        * component. */}
       <Paper
         elevation={0}
@@ -91,16 +97,16 @@ export const EmailNormalizer: React.FC = () => {
         }}
       >
         <Stack direction="row" spacing={2} alignItems="flex-start">
-          {/* Renders the email input field with validation. */}
+          {/* Renders the phone number input field with validation. */}
           <TextField
             fullWidth
-            label="Email Address"
+            label="Phone Number"
             variant="outlined"
-            value={email}
+            value={phoneNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
+              setPhoneNumber(e.target.value)
             }
-            placeholder="Enter an email address to normalize"
+            placeholder="Enter a phone number to normalize (e.g., +1 (555) 123-4567)"
             error={!!error}
             helperText={error}
             sx={{
@@ -112,12 +118,12 @@ export const EmailNormalizer: React.FC = () => {
             }}
           />
 
-          {/* Renders the submit button - disabled when no email is
+          {/* Renders the submit button - disabled when no phone number is
            * entered. */}
           <Button
             variant="contained"
-            onClick={processEmail}
-            disabled={!email}
+            onClick={processPhone}
+            disabled={!phoneNumber}
             sx={{
               minWidth: '120px',
               height: '56px',
@@ -131,7 +137,7 @@ export const EmailNormalizer: React.FC = () => {
           <Button
             variant="outlined"
             onClick={clearResults}
-            disabled={!email && !result.normalizedEmail}
+            disabled={!phoneNumber && !result.normalizedPhone}
             sx={{
               minWidth: '120px',
               height: '56px',
@@ -142,7 +148,7 @@ export const EmailNormalizer: React.FC = () => {
         </Stack>
       </Paper>
 
-      {/* Renders the results section of the email address normalizer
+      {/* Renders the results section of the phone number normalizer
        * component. */}
       <Paper
         elevation={0}
@@ -154,10 +160,10 @@ export const EmailNormalizer: React.FC = () => {
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          {/* Renders the normalized email address. */}
+          {/* Renders the normalized phone number. */}
           <ResultDisplay
-            title="Normalized Email"
-            value={result.normalizedEmail}
+            title="Normalized Phone Number"
+            value={result.normalizedPhone}
             field="normalized"
           />
 
