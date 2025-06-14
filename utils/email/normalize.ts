@@ -3,11 +3,10 @@ import {
   EmailNormalizationOptions,
 } from '../../types/email';
 
-
 /**
  * Validates an email address format and returns a validation result.
  *
- * @param email - The email address to validate. 
+ * @param email - The email address to validate.
  * @returns {EmailValidationResult} - The validation result containing
  * validation status and error message if invalid.
  */

@@ -1,207 +1,206 @@
-import React from 'react';
-import {
-  Container,
-  TextField,
-  Paper,
-  Typography,
-  Box,
-  Button,
-  Stack,
-} from '@mui/material';
-import { useEmailProcessor } from '../hooks/useEmailProcessor';
-import { ResultDisplay } from '../components/common/ResultDisplay';
+import React, { useState } from 'react';
+import { MainLayout } from '../components/layout/MainLayout';
+import { EmailNormalizer } from '../components/pages/EmailNormalizer';
+import { Typography, Box, Paper, useTheme } from '@mui/material';
 
 /**
- * A component that provides a user interface for normalizing email addresses
- * and generating their corresponding hashes. The component implements a text
- * field for entering an email address, a button for submitting the email
- * address, a button for clearing the results, and a display for the normalized
- * email address, the SHA-256 hash, and the Base64 encoded hash.
+ * The main page component of the application. It serves as the entry point and
+ * provides a layout with navigation between different sections of the
+ * application.
  *
- * @returns {JSX.Element} A fully functional email normalization interface.
+ * @returns {JSX.Element} The rendered main page component.
  */
 export default function Home() {
   /**
-   * A hook that provides the email processor functionality.
-   * @type {UseEmailProcessorResult}
+   * State to track the currently selected page. By default, the overview page
+   * is selected.
    */
-  const { email, setEmail, error, result, processEmail, clearResults } =
-    useEmailProcessor();
+  const [selectedPage, setSelectedPage] = useState('overview');
 
   /**
-   * Renders the main component.
+   * The theme object provides access to the application's color palette,
+   * typography, and other design properties. It is used to style the
+   * components within the page.
+   */
+  const theme = useTheme();
+
+  /**
+   * Renders the appropriate page content based on the selected page. The
+   * function dynamically switches between the different page components based
+   * on the selected page state.
    *
-   * @returns {JSX.Element} A fully functional email normalization interface.
+   * @returns {JSX.Element} The rendered page content.
+   */
+  const renderPage = () => {
+    switch (selectedPage) {
+      case 'overview':
+        return (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <Box>
+              {/* Renders the title of the overview page. */}
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: '2.5rem',
+                  fontWeight: 400,
+                  color: theme.palette.text.primary,
+                  mb: 2,
+                }}
+              >
+                Overview
+              </Typography>
+
+              {/* Renders the description of the overview page. */}
+              <Typography
+                variant="body1"
+                sx={{
+                  maxWidth: '1200px',
+                  color: theme.palette.text.secondary,
+                  fontSize: '1rem',
+                  lineHeight: 1.5,
+                  mb: 3,
+                }}
+              >
+                The application is designed to help you normalize and hash
+                directly identifying information (DII) such as email addresses.
+                This process is essential for privacy-preserving data handling
+                and secure information management.
+              </Typography>
+
+              {/* Renders the title of the email address normalization section. */}
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: '1.5rem',
+                  fontWeight: 500,
+                  color: theme.palette.text.primary,
+                  mb: 2,
+                  mt: 4,
+                }}
+              >
+                Email Address Normalization
+              </Typography>
+
+              {/* Renders the description of the email address normalization section. */}
+              <Typography
+                variant="body1"
+                sx={{
+                  maxWidth: '1200px',
+                  color: theme.palette.text.secondary,
+                  fontSize: '1rem',
+                  lineHeight: 1.5,
+                  mb: 3,
+                }}
+              >
+                Email normalization is the process of standardizing email
+                addresses to ensure consistent handling. Our tool performs the
+                following normalization steps:
+              </Typography>
+
+              {/* Renders the paper component that contains the normalization steps. */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  borderRadius: 2,
+                  backgroundColor: 'white',
+                  border: `1px solid ${theme.palette.divider}`,
+                  mb: 4,
+                }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="body1">
+                    • Converts all characters to lowercase.
+                  </Typography>
+                  <Typography variant="body1">
+                    • Removes all whitespace characters.
+                  </Typography>
+
+                  <Typography variant="body1">
+                    • In gmail.com addresses only: Removes dots (.) from the
+                    local part of the email address.
+                  </Typography>
+                  <Typography variant="body1">
+                    • In gmail.com addresses only: Removes everything after the
+                    plus sign (+) in the local part.
+                  </Typography>
+                </Box>
+              </Paper>
+
+              {/* Renders the title of the hashing and encoding section. */}
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: '1.5rem',
+                  fontWeight: 500,
+                  color: theme.palette.text.primary,
+                  mb: 2,
+                }}
+              >
+                Hashing and Encoding
+              </Typography>
+
+              {/* Renders the description of the hashing and encoding section. */}
+              <Typography
+                variant="body1"
+                sx={{
+                  maxWidth: '800px',
+                  color: theme.palette.text.secondary,
+                  fontSize: '1rem',
+                  lineHeight: 1.5,
+                  mb: 3,
+                }}
+              >
+                After normalization, the email address is processed through two
+                steps:
+              </Typography>
+
+              {/* Renders the paper component that contains the hashing and encoding steps. */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  borderRadius: 2,
+                  backgroundColor: 'white',
+                  border: `1px solid ${theme.palette.divider}`,
+                }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="body1">
+                    1. SHA-256 Hashing: The normalized email is hashed using the
+                    SHA-256 algorithm, producing a 64-character hexadecimal
+                    string.
+                  </Typography>
+                  <Typography variant="body1">
+                    2. Base64 Encoding: The resulting hash is then encoded using
+                    Base64, creating a URL-safe string that can be safely
+                    transmitted and stored.
+                  </Typography>
+                </Box>
+              </Paper>
+            </Box>
+          </Box>
+        );
+      case 'email':
+        // Renders the email address normalizer page.
+        return <EmailNormalizer />;
+      default:
+        // If an invalid page is selected, reset to the overview page.
+        setSelectedPage('overview');
+        return null;
+    }
+  };
+
+  /**
+   * Renders the main layout component with the selected page content. The
+   * MainLayout component provides the application's core structure, including
+   * the top app bar, sidebar, and main content area.
+   *
+   * @returns {JSX.Element} The rendered main layout component.
    */
   return (
-    // Renders the main container with a gradient background and a container
-    // for the content.
-    <Box
-      sx={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%)',
-        py: 6,
-      }}
-    >
-      {/* Renders the container with the content and maximum width. */}
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
-          }}
-        >
-          {/* Renders the header section with the title and description. */}
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography
-              variant="h4"
-              component="h1"
-              gutterBottom
-              sx={{
-                fontWeight: 700,
-                color: 'primary.main',
-                mb: 2,
-              }}
-            >
-              Email Address Normalizer
-            </Typography>
-
-            {/* Renders the description of the email normalization process. */}
-            <Typography
-              variant="body1"
-              sx={{
-                maxWidth: '800px',
-                mx: 'auto',
-                color: 'text.secondary',
-                fontSize: '0.95rem',
-                lineHeight: 1.6,
-              }}
-            >
-              An email hash is a Base64-encoded SHA-256 hash of a normalized
-              email address. The email address is first normalized, then hashed
-              using the SHA-256 hashing algorithm, and then the resulting bytes
-              of the hash value are encoded using Base64 encoding.
-            </Typography>
-          </Box>
-
-          {/* Renders the paper component with the email input and buttons. */}
-          <Paper
-            elevation={3}
-            sx={{
-              p: 3,
-              borderRadius: 2,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            <Stack direction="row" spacing={2}>
-              {/* Renders the text field for the email address. */}
-              <TextField
-                fullWidth
-                label="Email Address"
-                variant="outlined"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter an email address to normalize"
-                error={!!error}
-                helperText={error}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                  },
-                }}
-              />
-
-              {/* Renders the button for submitting the email address. */}
-              <Button
-                variant="contained"
-                onClick={processEmail}
-                disabled={!email}
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: 2,
-                  textTransform: 'uppercase',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  boxShadow:
-                    '0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)',
-                  '&:hover': {
-                    transform: 'translateY(-1px)',
-                    boxShadow:
-                      '0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08)',
-                  },
-                  transition: 'all 0.2s ease-in-out',
-                }}
-              >
-                Submit
-              </Button>
-
-              {/* Renders the button for clearing the results. */}
-              <Button
-                variant="outlined"
-                onClick={clearResults}
-                disabled={!email && !result.normalizedEmail}
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: 2,
-                  textTransform: 'uppercase',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  borderWidth: 2,
-                  '&:hover': {
-                    borderWidth: 2,
-                    transform: 'translateY(-1px)',
-                  },
-                  transition: 'all 0.2s ease-in-out',
-                }}
-              >
-                Clear
-              </Button>
-            </Stack>
-          </Paper>
-
-          {/* Renders the paper component with the results. */}
-          <Paper
-            elevation={3}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              {/* Renders the normalized email address. */}
-              <ResultDisplay
-                title="Normalized Email"
-                value={result.normalizedEmail}
-                field="normalized"
-              />
-
-              {/* Renders the SHA-256 hash. */}
-              <ResultDisplay
-                title="SHA-256 Hash"
-                value={result.sha256Hash}
-                field="sha256"
-              />
-
-              {/* Renders the Base64 encoded hash. */}
-              <ResultDisplay
-                title="Base64 Encoded Hash"
-                value={result.base64Hash}
-                field="base64"
-              />
-            </Box>
-          </Paper>
-        </Box>
-      </Container>
-    </Box>
+    <MainLayout selectedPage={selectedPage} onPageChange={setSelectedPage}>
+      {renderPage()}
+    </MainLayout>
   );
 }
