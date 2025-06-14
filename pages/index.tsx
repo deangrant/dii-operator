@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MainLayout } from '../components/layout/MainLayout';
 import { EmailNormalizer } from '../components/pages/EmailNormalizer';
+import { PhoneNumberNormalizer } from '../components/pages/PhoneNumberNormalizer';
 import { Typography, Box, Paper, useTheme } from '@mui/material';
 
 /**
@@ -62,9 +63,10 @@ export default function Home() {
                 }}
               >
                 The application is designed to help you normalize and hash
-                directly identifying information (DII) such as email addresses.
-                This process is essential for privacy-preserving data handling
-                and secure information management.
+                directly identifying information (DII) such as email addresses
+                and phone numbers. This process is essential for
+                privacy-preserving data handling and secure information
+                management.
               </Typography>
 
               {/* Renders the title of the email address normalization section. */}
@@ -127,6 +129,59 @@ export default function Home() {
                 </Box>
               </Paper>
 
+              {/* Renders the title of the phone number normalization section. */}
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: '1.5rem',
+                  fontWeight: 500,
+                  color: theme.palette.text.primary,
+                  mb: 2,
+                  mt: 4,
+                }}
+              >
+                Phone Number Normalization
+              </Typography>
+
+              {/* Renders the description of the phone number normalization section. */}
+              <Typography
+                variant="body1"
+                sx={{
+                  maxWidth: '1200px',
+                  color: theme.palette.text.secondary,
+                  fontSize: '1rem',
+                  lineHeight: 1.5,
+                  mb: 3,
+                }}
+              >
+                Phone number normalization is the process of standardizing phone
+                numbers to ensure consistent handling. Our tool performs the
+                following normalization steps:
+              </Typography>
+
+              {/* Renders the paper component that contains the phone number normalization steps. */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  borderRadius: 2,
+                  backgroundColor: 'white',
+                  border: `1px solid ${theme.palette.divider}`,
+                  mb: 4,
+                }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="body1">
+                    • Removes all non-digit characters (spaces, dashes,
+                    parentheses, etc.).
+                  </Typography>
+                  <Typography variant="body1">
+                    • Ensures the number starts with country code (1 for US
+                    numbers).
+                  </Typography>
+                </Box>
+              </Paper>
+
               {/* Renders the title of the hashing and encoding section. */}
               <Typography
                 variant="h2"
@@ -151,8 +206,8 @@ export default function Home() {
                   mb: 3,
                 }}
               >
-                After normalization, the email address is processed through two
-                steps:
+                After normalization, both email addresses and phone numbers are
+                processed through two steps:
               </Typography>
 
               {/* Renders the paper component that contains the hashing and encoding steps. */}
@@ -167,7 +222,7 @@ export default function Home() {
               >
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Typography variant="body1">
-                    1. SHA-256 Hashing: The normalized email is hashed using the
+                    1. SHA-256 Hashing: The normalized input is hashed using the
                     SHA-256 algorithm, producing a 64-character hexadecimal
                     string.
                   </Typography>
@@ -184,6 +239,9 @@ export default function Home() {
       case 'email':
         // Renders the email address normalizer page.
         return <EmailNormalizer />;
+      case 'phone':
+        // Renders the phone number normalizer page.
+        return <PhoneNumberNormalizer />;
       default:
         // If an invalid page is selected, reset to the overview page.
         setSelectedPage('overview');
