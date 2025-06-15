@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MainLayout } from '../components/layout/MainLayout';
 import { EmailNormalizer } from '../components/pages/EmailNormalizer';
 import { PhoneNumberNormalizer } from '../components/pages/PhoneNumberNormalizer';
+import { BatchNormalizer } from '../components/pages/BatchNormalizer';
 import { Typography, Box, Paper, useTheme } from '@mui/material';
 
 /**
@@ -242,6 +243,9 @@ export default function Home() {
       case 'phone':
         // Renders the phone number normalizer page.
         return <PhoneNumberNormalizer />;
+      case 'csv':
+        // Renders the batch normalizer page.
+        return <BatchNormalizer />;
       default:
         // If an invalid page is selected, reset to the overview page.
         setSelectedPage('overview');
