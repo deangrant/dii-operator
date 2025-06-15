@@ -65,12 +65,14 @@ describe('Email Normalization', () => {
     // Test dot removal
     expect(normalizeEmail('test.user@gmail.com')).toBe('testuser@gmail.com');
     expect(normalizeEmail('t.e.s.t@gmail.com')).toBe('test@gmail.com');
-    
+
     // Test plus sign removal
     expect(normalizeEmail('test+label@gmail.com')).toBe('test@gmail.com');
-    
+
     // Test both dot and plus sign removal
-    expect(normalizeEmail('test.user+label@gmail.com')).toBe('testuser@gmail.com');
+    expect(normalizeEmail('test.user+label@gmail.com')).toBe(
+      'testuser@gmail.com',
+    );
   });
 
   /**

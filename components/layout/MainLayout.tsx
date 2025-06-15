@@ -18,6 +18,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PhoneIcon from '@mui/icons-material/Phone';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 /**
  * Defines the width of the permanent sidebar drawer in pixels. This constant is
@@ -77,6 +78,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     { id: 'overview', label: 'Overview', icon: <DashboardIcon /> },
     { id: 'email', label: 'Email Address Normalizer', icon: <EmailIcon /> },
     { id: 'phone', label: 'Phone Number Normalizer', icon: <PhoneIcon /> },
+    { id: 'csv', label: 'Batch Normalizer', icon: <UploadFileIcon /> },
   ];
 
   /**
@@ -127,7 +129,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            top: '64px', // Height of AppBar
+            top: '64px',
             height: 'calc(100% - 64px)',
           },
         }}
