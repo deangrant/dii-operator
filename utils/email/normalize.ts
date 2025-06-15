@@ -79,13 +79,16 @@ export const normalizeEmail = (
     // Initialize the processed local part with the original local part.
     let processedLocalPart = localPart;
 
-    // Remove all dots from the local part if the option is set to true.
-    if (options.removeDots) {
+    // Evaluate if the option to remove dots is set to true and the domain is
+    // a Gmail address. If so, remove all dots from the local part.
+    if (options.removeDots && domain === 'gmail.com') {
       processedLocalPart = processedLocalPart.replace(/\./g, '');
     }
 
-    // Remove everything after the plus sign if the option is set to true.
-    if (options.removePlusSign) {
+    // Evaluate if the option to remove the plus sign is set to true and the
+    // domain is a Gmail address. If so, remove everything after the plus sign
+    // in the local part.
+    if (options.removePlusSign && domain === 'gmail.com') {
       processedLocalPart = processedLocalPart.split('+')[0];
     }
 

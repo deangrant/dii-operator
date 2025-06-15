@@ -45,16 +45,32 @@ describe('Email Validation', () => {
  */
 describe('Email Normalization', () => {
   /**
-   * Tests that email addresses are correctly normalized. Verifies handling of
-   * mixed case, dots in local part, and plus addressing.
+   * Tests that non-Gmail email addresses are correctly normalized. Verifies
+   * handling of mixed case, dots in local part, and plus addressing.
    */
-  test('normalizes email addresses correctly', () => {
+  test('normalizes non-Gmail email addresses correctly', () => {
     expect(normalizeEmail('Test.User@Example.com')).toBe(
-      'testuser@example.com',
+      'test.user@example.com',
     );
     expect(normalizeEmail('test.user+label@example.com')).toBe(
-      'testuser@example.com',
+      'test.user+label@example.com',
     );
+  });
+
+  /**
+   * Tests that Gmail email addresses are correctly normalized. Verifies
+   * handling of mixed case, dots in local part, and plus addressing.
+   */
+  test('normalizes Gmail addresses according to Gmail rules', () => {
+    // Test dot removal
+    expect(normalizeEmail('test.user@gmail.com')).toBe('testuser@gmail.com');
+    expect(normalizeEmail('t.e.s.t@gmail.com')).toBe('test@gmail.com');
+    
+    // Test plus sign removal
+    expect(normalizeEmail('test+label@gmail.com')).toBe('test@gmail.com');
+    
+    // Test both dot and plus sign removal
+    expect(normalizeEmail('test.user+label@gmail.com')).toBe('testuser@gmail.com');
   });
 
   /**
@@ -72,6 +88,7 @@ describe('Email Normalization', () => {
    */
   test('preserves domain part', () => {
     expect(normalizeEmail('test@EXAMPLE.COM')).toBe('test@example.com');
+    expect(normalizeEmail('test@GMAIL.COM')).toBe('test@gmail.com');
   });
 
   /**
@@ -80,7 +97,10 @@ describe('Email Normalization', () => {
    */
   test('removes whitespace', () => {
     expect(normalizeEmail(' test.user @ example.com ')).toBe(
-      'testuser@example.com',
+      'test.user@example.com',
+    );
+    expect(normalizeEmail(' test.user @ gmail.com ')).toBe(
+      'testuser@gmail.com',
     );
   });
 });
