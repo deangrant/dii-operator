@@ -1,0 +1,28 @@
+---
+description: Enforce apps/web typescript-project-structure (src/, layers, pages, routes)
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# apps/web TypeScript project structure
+
+Source of truth: `.agents/skills/typescript-project-structure/SKILL.md`
+
+## Must
+
+- Keep application source under `apps/web/src/` only (Vite root may hold `index.html`, `vite.config.ts`, `package.json`, `tsconfig.json`, `public/`).
+- Place shared UI by role: `components/core/`, `components/patterns/`, `components/containers/` (when needed), `components/layouts/`.
+- Use folder-per-component: `index.tsx` plus `index.types.ts` when props/types exist.
+- Put section screens under `src/pages/<PageName>/`.
+- Put URL routing under `src/routes/` (React Router). Do not reintroduce `useState` page switching in `App`.
+- Import shared components by direct path (e.g. `@/components/core/CopyButton`). No component-layer barrel files.
+
+## Must not
+
+- Create empty unused folders (`contexts/`, `services/`, `stores/`, `i18n/`, `assets/`) until needed.
+- Add `components/*/index.ts` re-export barrels.
+- Put page screens back under `components/pages/` or `components/common/`.
+
+## Styling
+
+- MUI `sx` and `styles/theme.ts` are allowed. Do not add empty `index.module.css` files solely to satisfy the skill checklist.

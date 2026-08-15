@@ -1,0 +1,22 @@
+---
+description: Enforce SOLID module boundaries for apps/web
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# apps/web SOLID TypeScript design
+
+Source of truth: `.agents/skills/solid-typescript-design/SKILL.md`
+
+## Must
+
+- **SRP:** Routes own the URL map; layouts own chrome; pages own section UI; hooks own process state; utils own validate/normalize/hash; `types/` owns shared contracts.
+- **OCP:** Add a section by adding a route + page module — do not grow string switches in `App`.
+- **ISP:** Keep prop interfaces minimal; do not pass unused props through UI components.
+- Prefer composition and focused modules over inheritance for UI and pure helpers.
+
+## Must not
+
+- Force class hierarchies or a DI container onto small pure utils.
+- Mix CSV/file I/O orchestration into shared normalize/hash helpers.
+- Embed page-specific business UI inside `MainLayout`.

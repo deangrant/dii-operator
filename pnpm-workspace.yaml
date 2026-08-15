@@ -6,6 +6,7 @@ packages:
 # Shared dependency versions referenced by packages via `catalog:`.
 catalog:
   "@biomejs/biome": 2.5.5
+  "@fontsource/sora": 5.3.0
   '@emotion/react': 11.14.0
   '@emotion/styled': 11.14.1
   '@mui/icons-material': 7.3.11
@@ -21,6 +22,7 @@ catalog:
   react: 19.2.8
   react-doctor: 0.9.1
   react-dom: 19.2.8
+  react-router-dom: 7.18.1
   typescript: 5.9.3
   ultracite: 7.9.4
   vite: 8.1.5
@@ -51,6 +53,10 @@ minimumReleaseAgeExclude:
 # or local. pnpm 11 default is true; set explicitly so intent survives default
 # changes.
 blockExoticSubdeps: true
+
+# Force-replace transitive versions across the dependency graph to avoid
+# supply-chain downgrades.
+overrides:
 
 # Block installs when a version has weaker trust evidence than an
 # earlier-published release (trusted publisher > provenance > none); mitigates

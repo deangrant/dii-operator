@@ -3,18 +3,28 @@
   "private": true,
   "packageManager": "pnpm@11.8.0",
   "devDependencies": {
-    "react-doctor": "catalog:"
+    "@biomejs/biome": "catalog:",
+    "react-doctor": "catalog:",
+    "ultracite": "catalog:"
   },
   "engines": {
     "node": ">=22",
     "pnpm": "11.8.0"
   },
   "scripts": {
-    "dev": "pnpm --filter web dev",
     "build": "pnpm --filter web build",
+    "dev": "pnpm --filter web dev",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
     "doctor": "react-doctor",
     "doctor:changed": "react-doctor --verbose --scope changed --yes",
     "doctor:full": "react-doctor --verbose --yes",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "format:fix": "biome format --write .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "lint:lockfile": "pnpm install --frozen-lockfile",
     "start": "pnpm --filter web preview"
   }
 }
