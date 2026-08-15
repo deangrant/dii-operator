@@ -117,7 +117,6 @@ export const BatchNormalizer = () => {
       <Box>
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "2.5rem",
             fontWeight: 400,
             mb: 2,
@@ -147,7 +146,7 @@ export const BatchNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "background.paper",
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 2,
           p: 3,
@@ -167,10 +166,10 @@ export const BatchNormalizer = () => {
             onDrop={handleDrop}
             sx={{
               "&:hover": {
-                bgcolor: "grey.100",
+                bgcolor: "action.hover",
               },
               alignItems: "center",
-              bgcolor: "grey.50",
+              bgcolor: "background.default",
               border: `2px dashed ${theme.palette.primary.main}`,
               borderRadius: 2,
               cursor: "pointer",

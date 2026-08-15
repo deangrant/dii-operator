@@ -11,7 +11,6 @@ export const Overview = () => {
       <Box>
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "2.5rem",
             fontWeight: 400,
             mb: 2,
@@ -39,7 +38,6 @@ export const Overview = () => {
 
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "1.5rem",
             fontWeight: 500,
             mb: 2,
@@ -68,7 +66,7 @@ export const Overview = () => {
         <Paper
           elevation={0}
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "background.paper",
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: 2,
             mb: 4,
@@ -95,7 +93,6 @@ export const Overview = () => {
 
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "1.5rem",
             fontWeight: 500,
             mb: 2,
@@ -124,7 +121,7 @@ export const Overview = () => {
         <Paper
           elevation={0}
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "background.paper",
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: 2,
             mb: 4,
@@ -144,7 +141,6 @@ export const Overview = () => {
 
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "1.5rem",
             fontWeight: 500,
             mb: 2,
@@ -171,7 +167,7 @@ export const Overview = () => {
         <Paper
           elevation={0}
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "background.paper",
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: 2,
             p: 4,

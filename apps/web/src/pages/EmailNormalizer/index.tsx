@@ -31,7 +31,6 @@ export const EmailNormalizer = () => {
       <Box>
         <Typography
           sx={{
-            color: theme.palette.text.primary,
             fontSize: "2.5rem",
             fontWeight: 400,
             mb: 2,
@@ -60,7 +59,7 @@ export const EmailNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "background.paper",
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 2,
           p: 3,
@@ -114,7 +113,7 @@ export const EmailNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "background.paper",
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 2,
           p: 4,

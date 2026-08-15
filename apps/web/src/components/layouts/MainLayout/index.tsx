@@ -43,7 +43,7 @@ export const MainLayout = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "background.paper",
           borderBottom: `1px solid ${theme.palette.divider}`,
           boxShadow: "none",
           color: theme.palette.text.primary,
@@ -120,7 +120,7 @@ export const MainLayout = () => {
       <Box
         component="main"
         sx={{
-          backgroundColor: "#f8f9fa",
+          backgroundColor: "transparent",
           flexGrow: 1,
           minHeight: "100vh",
           p: 3,

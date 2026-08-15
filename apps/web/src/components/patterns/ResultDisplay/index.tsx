@@ -24,9 +24,9 @@ export const ResultDisplay = ({ title, value }: ResultDisplayProps) => (
     <Box sx={{ position: "relative" }}>
       <Typography
         sx={{
-          bgcolor: "grey.50",
+          bgcolor: "background.default",
           border: "1px solid",
-          borderColor: "grey.200",
+          borderColor: "divider",
           borderRadius: 1,
           fontFamily: "monospace",
           p: 2,
