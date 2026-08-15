@@ -53,6 +53,10 @@ minimumReleaseAgeExclude:
 # changes.
 blockExoticSubdeps: true
 
+# Force-replace transitive versions across the dependency graph to avoid
+# supply-chain downgrades.
+overrides:
+
 # Block installs when a version has weaker trust evidence than an
 # earlier-published release (trusted publisher > provenance > none); mitigates
 # supply-chain downgrades.

@@ -1,17 +1,17 @@
-import { useRef, useState } from 'react';
+import { Download as DownloadIcon } from "@mui/icons-material";
 import {
-  Paper,
-  Typography,
+  Alert,
   Box,
   Button,
-  useTheme,
   CircularProgress,
-  Alert,
-} from '@mui/material';
-import { Download as DownloadIcon } from '@mui/icons-material';
-import { saveAs } from 'file-saver';
-import { processCSV } from '@/utils/csv/process';
-import type { ProcessedData } from '@/types/csv';
+  Paper,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { saveAs } from "file-saver";
+import { useCallback, useRef, useState } from "react";
+import type { ProcessedData } from "@/types/csv";
+import { processCSV } from "@/utils/csv/process";
 
 /**
  * Uploads a CSV of emails/phones, normalizes rows, and offers a hashed export.
@@ -25,102 +25,116 @@ export const BatchNormalizer = () => {
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleFileUpload = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) {
+        return;
+      }
 
-    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-      setError('Please upload a CSV file');
+      if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+        setError("Please upload a CSV file");
+        setProcessedData(null);
+        return;
+      }
+
+      setIsProcessing(true);
+      setError(null);
       setProcessedData(null);
+
+      try {
+        const result = await processCSV(file);
+        setProcessedData(result);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An error occurred while processing the file",
+        );
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [],
+  );
+
+  const handleDownload = useCallback(() => {
+    if (!processedData) {
       return;
     }
-
-    setIsProcessing(true);
-    setError(null);
-    setProcessedData(null);
-
-    try {
-      const result = await processCSV(file);
-      setProcessedData(result);
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'An error occurred while processing the file',
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!processedData) return;
 
     const csvContent = [
-      processedData.headers.join(','),
+      processedData.headers.join(","),
       ...processedData.rows.map((row) =>
-        [row.original, row.normalized, row.sha256, row.base64].join(','),
+        [row.original, row.normalized, row.sha256, row.base64].join(","),
       ),
-    ].join('\n');
+    ].join("\n");
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
-    saveAs(blob, 'processed_data.csv');
-  };
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    saveAs(blob, "processed_data.csv");
+  }, [processedData]);
 
-  const handleDragOver = (event: React.DragEvent) => {
+  const handleDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
-  };
+  }, []);
 
-  const handleDrop = (event: React.DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    const file = event.dataTransfer.files?.[0];
-    if (!file) return;
+      const file = event.dataTransfer.files?.[0];
+      if (!file) {
+        return;
+      }
 
-    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-      setError('Please upload a CSV file');
-      setProcessedData(null);
-      return;
-    }
+      if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+        setError("Please upload a CSV file");
+        setProcessedData(null);
+        return;
+      }
 
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.files = dataTransfer.files;
-      handleFileUpload({
-        target: { files: dataTransfer.files },
-      } as React.ChangeEvent<HTMLInputElement>);
-    }
-  };
+      if (fileInputRef.current) {
+        fileInputRef.current.files = dataTransfer.files;
+        handleFileUpload({
+          target: { files: dataTransfer.files },
+        } as React.ChangeEvent<HTMLInputElement>);
+      }
+    },
+    [handleFileUpload],
+  );
+
+  const handleBrowseClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <Box>
         <Typography
-          variant="h1"
           sx={{
-            fontSize: '2.5rem',
-            fontWeight: 400,
             color: theme.palette.text.primary,
+            fontSize: "2.5rem",
+            fontWeight: 400,
             mb: 2,
           }}
+          variant="h1"
         >
           Batch Normalizer
         </Typography>
 
         <Typography
-          variant="body1"
           sx={{
-            maxWidth: '1200px',
             color: theme.palette.text.secondary,
-            fontSize: '1rem',
+            fontSize: "1rem",
             lineHeight: 1.5,
+            maxWidth: "1200px",
           }}
+          variant="body1"
         >
           Upload a CSV file containing a single column of email addresses and/or
           phone numbers (up to 10,000 records). The system will automatically
@@ -133,100 +147,100 @@ export const BatchNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          p: 3,
-          borderRadius: 2,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           border: `1px solid ${theme.palette.divider}`,
+          borderRadius: 2,
+          p: 3,
         }}
       >
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
             gap: 2,
           }}
         >
           <Box
-            sx={{
-              width: '100%',
-              height: '200px',
-              border: `2px dashed ${theme.palette.primary.main}`,
-              borderRadius: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              bgcolor: 'grey.50',
-              '&:hover': {
-                bgcolor: 'grey.100',
-              },
-            }}
+            onClick={handleBrowseClick}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
+            sx={{
+              "&:hover": {
+                bgcolor: "grey.100",
+              },
+              alignItems: "center",
+              bgcolor: "grey.50",
+              border: `2px dashed ${theme.palette.primary.main}`,
+              borderRadius: 2,
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              height: "200px",
+              justifyContent: "center",
+              width: "100%",
+            }}
           >
             <input
-              ref={fileInputRef}
-              type="file"
               accept=".csv"
-              onChange={handleFileUpload}
-              style={{ display: 'none' }}
               disabled={isProcessing}
+              onChange={handleFileUpload}
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              type="file"
             />
-            <Typography variant="h6" color="primary" gutterBottom>
+            <Typography color="primary" gutterBottom variant="h6">
               Drag and drop your CSV file here
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary" variant="body2">
               or click to browse
             </Typography>
           </Box>
 
-          {isProcessing && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {isProcessing ? (
+            <Box sx={{ alignItems: "center", display: "flex", gap: 2 }}>
               <CircularProgress size={20} />
               <Typography>Processing your file...</Typography>
             </Box>
-          )}
+          ) : null}
 
-          {error && (
-            <Alert severity="error" sx={{ width: '100%' }}>
+          {error ? (
+            <Alert severity="error" sx={{ width: "100%" }}>
               {error}
             </Alert>
-          )}
+          ) : null}
 
-          {processedData && (
-            <Box sx={{ width: '100%', mt: 2 }}>
+          {processedData ? (
+            <Box sx={{ mt: 2, width: "100%" }}>
               <Alert
-                severity={processedData.rows.length > 0 ? 'success' : 'info'}
+                severity={processedData.rows.length > 0 ? "success" : "info"}
                 sx={{ mb: 2 }}
               >
                 {processedData.rows.length > 0 ? (
                   <>
                     Successfully processed {processedData.rows.length} records.
-                    {processedData.skippedRows > 0 && (
+                    {processedData.skippedRows > 0 ? (
                       <span> {processedData.skippedRows} rows skipped.</span>
-                    )}
+                    ) : null}
                   </>
                 ) : (
-                  'No valid records found in the file. Please check your input and try again.'
+                  "No valid records found in the file. Please check your input and try again."
                 )}
               </Alert>
 
               <Button
-                variant="contained"
                 color="primary"
-                onClick={handleDownload}
-                startIcon={<DownloadIcon />}
                 disabled={!processedData || processedData.rows.length === 0}
                 fullWidth
-                sx={{ mt: 2, height: '48px' }}
+                onClick={handleDownload}
+                startIcon={<DownloadIcon />}
+                sx={{ height: "48px", mt: 2 }}
+                variant="contained"
               >
                 DOWNLOAD
               </Button>
             </Box>
-          )}
+          ) : null}
         </Box>
       </Paper>
     </Box>

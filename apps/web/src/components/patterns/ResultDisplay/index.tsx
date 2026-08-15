@@ -1,57 +1,55 @@
-import { Box, Typography } from '@mui/material';
-import { CopyButton } from '@/components/core/CopyButton';
-import type { ResultDisplayProps } from './index.types';
+import { Box, Typography } from "@mui/material";
+import { CopyButton } from "@/components/core/CopyButton";
+import type { ResultDisplayProps } from "./index.types";
 
 /**
  * Renders a titled monospace value with an optional clipboard control.
  */
-export const ResultDisplay = ({ title, value }: ResultDisplayProps) => {
-  return (
-    <Box>
+export const ResultDisplay = ({ title, value }: ResultDisplayProps) => (
+  <Box>
+    <Typography
+      gutterBottom
+      sx={{
+        alignItems: "center",
+        color: "primary.main",
+        display: "flex",
+        fontWeight: 600,
+        gap: 1,
+      }}
+      variant="h6"
+    >
+      {title}
+    </Typography>
+
+    <Box sx={{ position: "relative" }}>
       <Typography
-        variant="h6"
-        gutterBottom
         sx={{
-          color: 'primary.main',
-          fontWeight: 600,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
+          bgcolor: "grey.50",
+          border: "1px solid",
+          borderColor: "grey.200",
+          borderRadius: 1,
+          fontFamily: "monospace",
+          p: 2,
+          pr: 6,
+          wordBreak: "break-all",
         }}
+        variant="body1"
       >
-        {title}
+        {value || "-"}
       </Typography>
 
-      <Box sx={{ position: 'relative' }}>
-        <Typography
-          variant="body1"
+      {value ? (
+        <Box
           sx={{
-            wordBreak: 'break-all',
-            fontFamily: 'monospace',
-            bgcolor: 'grey.50',
-            p: 2,
-            pr: 6,
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'grey.200',
+            position: "absolute",
+            right: 8,
+            top: "50%",
+            transform: "translateY(-50%)",
           }}
         >
-          {value || '-'}
-        </Typography>
-
-        {value && (
-          <Box
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: '50%',
-              transform: 'translateY(-50%)',
-            }}
-          >
-            <CopyButton text={value} />
-          </Box>
-        )}
-      </Box>
+          <CopyButton text={value} />
+        </Box>
+      ) : null}
     </Box>
-  );
-};
+  </Box>
+);

@@ -1,11 +1,11 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'node:path';
-import { copyFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { copyFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
-const srcDir = path.resolve(rootDir, 'src');
+const srcDir = path.resolve(rootDir, "src");
 
 /**
  * Copies the built index.html to 404.html so GitHub Pages serves the SPA for
@@ -13,26 +13,26 @@ const srcDir = path.resolve(rootDir, 'src');
  */
 function githubPagesSpaFallback() {
   return {
-    name: 'github-pages-spa-fallback',
     closeBundle() {
-      const outDir = path.resolve(rootDir, 'dist');
+      const outDir = path.resolve(rootDir, "dist");
       copyFileSync(
-        path.join(outDir, 'index.html'),
-        path.join(outDir, '404.html'),
+        path.join(outDir, "index.html"),
+        path.join(outDir, "404.html"),
       );
     },
+    name: "github-pages-spa-fallback",
   };
 }
 
 export default defineConfig({
-  plugins: [react(), githubPagesSpaFallback()],
-  base: '/dii-operator/',
+  base: "/dii-operator/",
   build: {
-    outDir: 'dist',
+    outDir: "dist",
   },
+  plugins: [react(), githubPagesSpaFallback()],
   resolve: {
     alias: {
-      '@': srcDir,
+      "@": srcDir,
     },
   },
 });

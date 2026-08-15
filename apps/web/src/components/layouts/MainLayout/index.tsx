@@ -1,34 +1,34 @@
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import EmailIcon from "@mui/icons-material/Email";
+import MenuIcon from "@mui/icons-material/Menu";
+import PhoneIcon from "@mui/icons-material/Phone";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
+  AppBar,
   Box,
   Container,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Toolbar,
   Typography,
   useTheme,
-  AppBar,
-  Toolbar,
-  IconButton,
-} from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
-import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PhoneIcon from '@mui/icons-material/Phone';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import type { MainLayoutNavItem } from './index.types';
+} from "@mui/material";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import type { MainLayoutNavItem } from "./index.types";
 
 /** Fixed width of the permanent navigation drawer in pixels. */
 const DRAWER_WIDTH = 280;
 
 const menuItems: MainLayoutNavItem[] = [
-  { path: '/', label: 'Overview', icon: <DashboardIcon /> },
-  { path: '/email', label: 'Email Address Normalizer', icon: <EmailIcon /> },
-  { path: '/phone', label: 'Phone Number Normalizer', icon: <PhoneIcon /> },
-  { path: '/csv', label: 'Batch Normalizer', icon: <UploadFileIcon /> },
+  { icon: <DashboardIcon />, label: "Overview", path: "/" },
+  { icon: <EmailIcon />, label: "Email Address Normalizer", path: "/email" },
+  { icon: <PhoneIcon />, label: "Phone Number Normalizer", path: "/phone" },
+  { icon: <UploadFileIcon />, label: "Batch Normalizer", path: "/csv" },
 ];
 
 /**
@@ -39,65 +39,65 @@ export const MainLayout = () => {
   const location = useLocation();
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <AppBar
         position="fixed"
         sx={{
+          backgroundColor: "white",
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          boxShadow: "none",
+          color: theme.palette.text.primary,
           // Keep the bar above the permanent drawer.
           zIndex: theme.zIndex.drawer + 1,
-          backgroundColor: 'white',
-          color: theme.palette.text.primary,
-          boxShadow: 'none',
-          borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
         <Toolbar>
           <IconButton
-            edge="start"
-            color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            color="inherit"
+            edge="start"
+            sx={{ display: { sm: "none" }, mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="primary" sx={{ fontWeight: 500 }}>
+          <Typography color="primary" sx={{ fontWeight: 500 }} variant="h6">
             Directly Identifiying Information (DII) Operator
           </Typography>
         </Toolbar>
       </AppBar>
 
       <Drawer
-        variant="permanent"
         sx={{
-          width: DRAWER_WIDTH,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            height: "calc(100% - 64px)",
+            top: "64px",
             width: DRAWER_WIDTH,
-            boxSizing: 'border-box',
-            top: '64px',
-            height: 'calc(100% - 64px)',
           },
+          flexShrink: 0,
+          width: DRAWER_WIDTH,
         }}
+        variant="permanent"
       >
         <List sx={{ pt: 2 }}>
           {menuItems.map((item) => {
             const isActive =
-              item.path === '/'
-                ? location.pathname === '/'
+              item.path === "/"
+                ? location.pathname === "/"
                 : location.pathname.startsWith(item.path);
 
             return (
-              <ListItem key={item.path} disablePadding>
+              <ListItem disablePadding key={item.path}>
                 <ListItemButton
                   component={NavLink}
-                  to={item.path}
-                  end={item.path === '/'}
+                  end={item.path === "/"}
                   selected={isActive}
-                  sx={{ py: 1, px: 2 }}
+                  sx={{ px: 2, py: 1 }}
+                  to={item.path}
                 >
                   <ListItemIcon
                     sx={{
-                      color: isActive ? 'primary.main' : 'inherit',
+                      color: isActive ? "primary.main" : "inherit",
                       minWidth: 40,
                     }}
                   >
@@ -106,7 +106,7 @@ export const MainLayout = () => {
                   <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
-                      fontSize: '0.875rem',
+                      fontSize: "0.875rem",
                       fontWeight: isActive ? 500 : 400,
                     }}
                   />
@@ -120,11 +120,11 @@ export const MainLayout = () => {
       <Box
         component="main"
         sx={{
+          backgroundColor: "#f8f9fa",
           flexGrow: 1,
+          minHeight: "100vh",
           p: 3,
-          backgroundColor: '#f8f9fa',
-          minHeight: '100vh',
-          pt: '88px',
+          pt: "88px",
         }}
       >
         <Container maxWidth="lg" sx={{ py: 4 }}>

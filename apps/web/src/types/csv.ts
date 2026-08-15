@@ -2,14 +2,14 @@
  * One CSV input row after normalization and hashing.
  */
 export interface ProcessedRow {
-  /** Raw cell value from the uploaded file. */
-  original: string;
-  /** Normalized email or phone derived from `original`. */
-  normalized: string;
-  /** Hex-encoded SHA-256 of `normalized`. */
-  sha256: string;
   /** Base64-encoded SHA-256 of `normalized`. */
   base64: string;
+  /** Normalized email or phone derived from `original`. */
+  normalized: string;
+  /** Raw cell value from the uploaded file. */
+  original: string;
+  /** Hex-encoded SHA-256 of `normalized`. */
+  sha256: string;
 }
 
 /**

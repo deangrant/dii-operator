@@ -1,14 +1,15 @@
 import {
-  TextField,
-  Paper,
-  Typography,
   Box,
   Button,
+  Paper,
   Stack,
+  TextField,
+  Typography,
   useTheme,
-} from '@mui/material';
-import { useEmailProcessor } from '@/hooks/useEmailProcessor';
-import { ResultDisplay } from '@/components/patterns/ResultDisplay';
+} from "@mui/material";
+import { useCallback } from "react";
+import { ResultDisplay } from "@/components/patterns/ResultDisplay";
+import { useEmailProcessor } from "@/hooks/use-email-processor";
 
 /**
  * Collects an email address and displays its normalized form and hashes.
@@ -18,29 +19,36 @@ export const EmailNormalizer = () => {
   const { email, setEmail, error, result, processEmail, clearResults } =
     useEmailProcessor();
 
+  const handleEmailChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(event.target.value);
+    },
+    [setEmail],
+  );
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <Box>
         <Typography
-          variant="h1"
           sx={{
-            fontSize: '2.5rem',
-            fontWeight: 400,
             color: theme.palette.text.primary,
+            fontSize: "2.5rem",
+            fontWeight: 400,
             mb: 2,
           }}
+          variant="h1"
         >
           Email Address Normalizer
         </Typography>
 
         <Typography
-          variant="body1"
           sx={{
-            maxWidth: '1200px',
             color: theme.palette.text.secondary,
-            fontSize: '1rem',
+            fontSize: "1rem",
             lineHeight: 1.5,
+            maxWidth: "1200px",
           }}
+          variant="body1"
         >
           An email hash is a Base64-encoded SHA-256 hash of a normalized email
           address. The email address is first normalized, then hashed using the
@@ -52,51 +60,51 @@ export const EmailNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          p: 3,
-          borderRadius: 2,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           border: `1px solid ${theme.palette.divider}`,
+          borderRadius: 2,
+          p: 3,
         }}
       >
-        <Stack direction="row" spacing={2} alignItems="flex-start">
+        <Stack alignItems="flex-start" direction="row" spacing={2}>
           <TextField
-            fullWidth
-            label="Email Address"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter an email address to normalize"
             error={!!error}
+            fullWidth
             helperText={error}
+            label="Email Address"
+            onChange={handleEmailChange}
+            placeholder="Enter an email address to normalize"
             sx={{
-              '& .MuiOutlinedInput-root': {
-                '&:hover fieldset': {
+              "& .MuiOutlinedInput-root": {
+                "&:hover fieldset": {
                   borderColor: theme.palette.primary.main,
                 },
               },
             }}
+            value={email}
+            variant="outlined"
           />
 
           <Button
-            variant="contained"
-            onClick={processEmail}
             disabled={!email}
+            onClick={processEmail}
             sx={{
-              minWidth: '120px',
-              height: '56px',
+              height: "56px",
+              minWidth: "120px",
             }}
+            variant="contained"
           >
             SUBMIT
           </Button>
 
           <Button
-            variant="outlined"
+            disabled={!(email || result.normalizedEmail)}
             onClick={clearResults}
-            disabled={!email && !result.normalizedEmail}
             sx={{
-              minWidth: '120px',
-              height: '56px',
+              height: "56px",
+              minWidth: "120px",
             }}
+            variant="outlined"
           >
             CLEAR
           </Button>
@@ -106,13 +114,13 @@ export const EmailNormalizer = () => {
       <Paper
         elevation={0}
         sx={{
-          p: 4,
-          borderRadius: 2,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           border: `1px solid ${theme.palette.divider}`,
+          borderRadius: 2,
+          p: 4,
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <ResultDisplay
             title="Normalized Email"
             value={result.normalizedEmail}

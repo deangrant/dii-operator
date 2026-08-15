@@ -1,21 +1,21 @@
 import type {
-  EmailValidationResult,
   EmailNormalizationOptions,
-} from '@/types/email';
+  EmailValidationResult,
+} from "@/types/email";
+
+const EMAIL_FORMAT_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 /**
  * Validates whether a string looks like a usable email address.
  */
 export const validateEmail = (email: string): EmailValidationResult => {
   if (!email) {
-    return { isValid: false, error: 'Email address is required' };
+    return { error: "Email address is required", isValid: false };
   }
 
   // Local part, `@`, domain labels, and a TLD of at least two characters.
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-  if (!emailRegex.test(email)) {
-    return { isValid: false, error: 'Please enter a valid email address' };
+  if (!EMAIL_FORMAT_REGEX.test(email)) {
+    return { error: "Please enter a valid email address", isValid: false };
   }
 
   return { isValid: true };
@@ -29,36 +29,39 @@ export const validateEmail = (email: string): EmailValidationResult => {
 export const normalizeEmail = (
   email: string,
   options: EmailNormalizationOptions = {
-    removeWhitespace: true,
     convertToLowercase: true,
     removeDots: true,
     removePlusSign: true,
+    removeWhitespace: true,
   },
 ): string => {
-  if (!email) return '';
+  if (!email) {
+    return "";
+  }
 
   let normalized = email;
 
   if (options.removeWhitespace) {
-    normalized = normalized.replace(/\s+/g, '');
+    normalized = normalized.replace(/\s+/g, "");
   }
 
   if (options.convertToLowercase) {
     normalized = normalized.toLowerCase();
   }
 
-  const [localPart, domain] = normalized.split('@');
+  const [localPart, domain] = normalized.split("@");
 
   if (domain) {
     let processedLocalPart = localPart;
 
     // Gmail ignores dots and plus-tags in the local part for matching.
-    if (options.removeDots && domain === 'gmail.com') {
-      processedLocalPart = processedLocalPart.replace(/\./g, '');
+    if (options.removeDots && domain === "gmail.com") {
+      processedLocalPart = processedLocalPart.replace(/\./g, "");
     }
 
-    if (options.removePlusSign && domain === 'gmail.com') {
-      processedLocalPart = processedLocalPart.split('+')[0];
+    if (options.removePlusSign && domain === "gmail.com") {
+      const [localWithoutPlus] = processedLocalPart.split("+");
+      processedLocalPart = localWithoutPlus;
     }
 
     normalized = `${processedLocalPart}@${domain}`;

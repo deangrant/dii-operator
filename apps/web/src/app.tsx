@@ -1,5 +1,5 @@
-import { BrowserRouter } from 'react-router-dom';
-import { AppRoutes } from '@/routes/AppRoutes';
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "@/routes/app-routes";
 
 /**
  * Wraps the routed application in the project-pages basename.
