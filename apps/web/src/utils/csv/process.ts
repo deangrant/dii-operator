@@ -1,6 +1,6 @@
 import type { ProcessedData, ProcessedRow } from "@/types/csv";
 import { normalizeEmail, validateEmail } from "@/utils/email/normalize";
-import { generateBase64Hash, generateSha256Hash } from "@/utils/hash/generate";
+import { generateSha256Pair } from "@/utils/hash/generate";
 import { normalizePhone } from "@/utils/phone/normalize";
 
 const PHONE_CANDIDATE_REGEX = /^[+\d\s\-()]+$/;
@@ -31,7 +31,6 @@ export const detectValueType = (
  */
 export const processCSV = async (file: File): Promise<ProcessedData> => {
   const MAX_RECORDS = 10_000;
-  const rows: ProcessedRow[] = [];
   let skippedRows = 0;
 
   try {
@@ -44,6 +43,8 @@ export const processCSV = async (file: File): Promise<ProcessedData> => {
     if (lines.length > MAX_RECORDS) {
       throw new Error(`File exceeds maximum record limit of ${MAX_RECORDS}`);
     }
+
+    const pending: Array<{ normalized: string; original: string }> = [];
 
     for (const line of lines) {
       const values = line.split(",");
@@ -64,16 +65,23 @@ export const processCSV = async (file: File): Promise<ProcessedData> => {
       }
 
       if (normalized) {
-        rows.push({
-          base64: generateBase64Hash(normalized),
-          normalized,
-          original: values[0],
-          sha256: generateSha256Hash(normalized),
-        });
+        pending.push({ normalized, original: values[0] });
       } else {
         skippedRows += 1;
       }
     }
+
+    const rows: ProcessedRow[] = await Promise.all(
+      pending.map(async ({ normalized, original }) => {
+        const { base64, sha256 } = await generateSha256Pair(normalized);
+        return {
+          base64,
+          normalized,
+          original,
+          sha256,
+        };
+      }),
+    );
 
     return {
       headers: ["Input", "Normalized", "SHA256", "Base64"],

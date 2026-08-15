@@ -10,7 +10,7 @@ interface UseEmailProcessorResult {
   clearResults: () => void;
   email: string;
   error: string;
-  processEmail: () => void;
+  processEmail: () => Promise<void>;
   result: EmailHashResult;
   setEmail: (email: string) => void;
 }
@@ -27,7 +27,7 @@ export const useEmailProcessor = (): UseEmailProcessorResult => {
     sha256Hash: "",
   });
 
-  const processEmail = useCallback(() => {
+  const processEmail = useCallback(async () => {
     if (!email) {
       return;
     }
@@ -40,7 +40,7 @@ export const useEmailProcessor = (): UseEmailProcessorResult => {
 
     setError("");
     const normalized = normalizeEmail(email);
-    setResult(generateEmailHashes(normalized));
+    setResult(await generateEmailHashes(normalized));
   }, [email]);
 
   const clearResults = useCallback(() => {
