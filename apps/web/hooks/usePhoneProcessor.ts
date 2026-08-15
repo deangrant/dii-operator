@@ -1,6 +1,9 @@
 import { useState, useCallback } from 'react';
-import { createHash } from 'crypto';
 import { validatePhone, normalizePhone } from '../utils/phone/normalize';
+import {
+  generateSha256Hash,
+  generateBase64Hash,
+} from '../utils/hash/generate';
 
 /**
  * Defines the interface for the return type of the phone processor hook. This
@@ -86,15 +89,10 @@ export const usePhoneProcessor = (): UsePhoneProcessorResult => {
    * @returns {PhoneHashResult} The hashing results
    */
   const generatePhoneHashes = (normalizedPhone: string): PhoneHashResult => {
-    const sha256Hash = createHash('sha256')
-      .update(normalizedPhone)
-      .digest('hex');
-    const base64Hash = Buffer.from(sha256Hash, 'hex').toString('base64');
-
     return {
       normalizedPhone,
-      sha256Hash,
-      base64Hash,
+      sha256Hash: generateSha256Hash(normalizedPhone),
+      base64Hash: generateBase64Hash(normalizedPhone),
     };
   };
 

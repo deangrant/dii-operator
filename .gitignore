@@ -1,2 +1,28 @@
-node_modules
-.next
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Legacy Next.js (safe to ignore if leftover locally)
+.next/
+out/
+
+# pnpm
+.pnpm-store/
+
+# Biome / tooling
+.biome/
+
+# Logs & OS
+*.log
+.DS_Store
+
+# Local env
+.env
+.env.*
+!.env.example

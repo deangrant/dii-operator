@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import { MainLayout } from '../components/layout/MainLayout';
-import { EmailNormalizer } from '../components/pages/EmailNormalizer';
-import { PhoneNumberNormalizer } from '../components/pages/PhoneNumberNormalizer';
-import { BatchNormalizer } from '../components/pages/BatchNormalizer';
+import { useState } from 'react';
+import { MainLayout } from './components/layout/MainLayout';
+import { EmailNormalizer } from './components/pages/EmailNormalizer';
+import { PhoneNumberNormalizer } from './components/pages/PhoneNumberNormalizer';
+import { BatchNormalizer } from './components/pages/BatchNormalizer';
 import { Typography, Box, Paper, useTheme } from '@mui/material';
 
 /**
- * The main page component of the application. It serves as the entry point and
- * provides a layout with navigation between different sections of the
- * application.
+ * The main application component. It serves as the entry point and provides a
+ * layout with navigation between different sections of the application.
  *
- * @returns {JSX.Element} The rendered main page component.
+ * @returns {JSX.Element} The rendered main application component.
  */
-export default function Home() {
+export default function App() {
   /**
    * State to track the currently selected page. By default, the overview page
    * is selected.
