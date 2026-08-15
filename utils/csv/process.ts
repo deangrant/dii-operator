@@ -1,5 +1,4 @@
 import { normalizeEmail, validateEmail } from '../email/normalize';
-import { createHash } from 'crypto';
 import { normalizePhone } from '../phone/normalize';
 import { generateSha256Hash, generateBase64Hash } from '../hash/generate';
 
