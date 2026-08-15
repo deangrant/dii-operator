@@ -1,0 +1,19 @@
+---
+description: MUI theme and sx styling conventions for apps/web
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# apps/web MUI / theme
+
+## Must
+
+- Drive colors, typography, and component chrome from `apps/web/src/styles/theme.ts`.
+- Prefer MUI `sx` and theme palette tokens (`primary`, `text`, `background`, `divider`) over hard-coded light greys.
+- Load fonts via `@fontsource/sora` imports in `src/index.tsx` (not Google Fonts CDN links).
+
+## Must not
+
+- Add CSS Modules for app chrome solely to satisfy a generic structure checklist.
+- Reintroduce light Material greys (`#f8f9fa`, `grey.50`) on dark theme surfaces.
+- Override heading colors in page `sx` when theme typography already sets them.

@@ -1,0 +1,18 @@
+---
+description: Run react-doctor after React edits in apps/web
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# apps/web react-doctor
+
+Source of truth: `.agents/skills/react-doctor/SKILL.md`
+
+## Must
+
+- After meaningful React code changes, run `pnpm doctor:changed` and fix regressions before finishing.
+- Invoke react-doctor only via root `pnpm run doctor*` scripts (pinned catalog version).
+
+## Must not
+
+- Call `npx react-doctor@latest` or an unpinned global binary.

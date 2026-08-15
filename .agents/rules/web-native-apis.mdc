@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Prefer native JavaScript / Web APIs
 
-Minimize bundle size, attack surface, and maintenance cost. Reach for platform APIs before adding imports or changing dependencies.
+Source of truth: `.agents/skills/native-web-apis/SKILL.md`
 
 ## Must
 
