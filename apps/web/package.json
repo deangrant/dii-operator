@@ -17,7 +17,8 @@
     "crypto-js": "catalog:",
     "file-saver": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-router-dom": "catalog:"
   },
   "devDependencies": {
     "@types/crypto-js": "catalog:",

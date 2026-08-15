@@ -1,0 +1,23 @@
+---
+description: Enforce JSDoc and comment style for apps/web TypeScript
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# apps/web JSDoc / comments
+
+Source of truth: `.agents/skills/jsdoc-typescript-docs/SKILL.md`
+
+## Must
+
+- Use `/** JSDoc */` for public APIs and exported types; use `//` for implementation “why” notes.
+- Write method summaries as third-person verb phrases (“Returns…”, “Normalizes…”).
+- Put each JSDoc tag on its own line.
+- Document parameters/returns only when they add meaning beyond the TypeScript signature.
+- Use repeated `//` for multi-line ordinary comments — never `/* */` blocks.
+
+## Must not
+
+- Put TypeScript types in `@param` / `@returns` / `@property` tags.
+- Add redundant `@type` comments on `useState` or other obvious locals.
+- Restate only the symbol name in documentation.
