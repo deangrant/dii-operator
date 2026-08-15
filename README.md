@@ -1,126 +1,118 @@
-# Directly Identifying Information (DII) Operator
+# DII Operator
 
-A standardized email and phone number normalization and hashing utility that follows UID2 specifications for email address and phone number processing. This tool ensures consistent normalization and hash generation for identity resolution and data matching purposes.
+DII Operator is a client-only web app for **UID2-oriented** email and phone
+normalization and hashing. It runs in the browser, uses the Web Crypto API for
+SHA-256, and can process a one-column CSV batch. There is no application
+backend.
 
-## Overview
+The Vite + React app lives in `apps/web` inside a pnpm workspace. GitHub Pages
+serves the build under `/dii-operator/`.
 
-This application implements the UID2 email and phone ormalization and hashing standards, providing a reliable way to generate consistent, standardized hashes. The tool is particularly useful for:
+## What it does
 
-- Identity resolution systems.
-- Data matching and deduplication.
-- Privacy-preserving user identification.
-- Cross-platform user tracking.
+| Section | Path | Purpose |
+| ------- | ---- | ------- |
+| Overview | `/` | Product summary |
+| Email | `/email` | Normalize and hash one email address |
+| Phone | `/phone` | Normalize and hash one phone number |
+| Batch | `/csv` | Normalize and hash a CSV column (up to 10,000 rows) |
 
-## Technical Specifications
+For each accepted value the UI shows:
 
-### Email Normalization Rules
+1. The normalized string
+2. The SHA-256 digest as lowercase hex
+3. The same digest as standard Base64
 
-The application follows the UID2 email normalization standard:
+You can copy each field to the clipboard.
 
-1. **Whitespace Removal**
+## How it works
 
-   - Removes all leading and trailing spaces.
-   - Removes all internal whitespace characters.
+All normalize and hash work runs in the browser. Digests use
+`crypto.subtle.digest("SHA-256", …)` on UTF-8 bytes of the **normalized**
+string. Hex and Base64 share one digest.
 
-2. **Case Normalization**
+### Email (UID2-oriented)
 
-   - Converts all characters to lowercase.
+1. Strip all whitespace.
+2. Convert to lowercase.
+3. For `gmail.com` local parts: remove `.` characters and strip a `+` tag and
+   everything after it.
+4. Keep the domain unchanged.
 
-3. **Gmail-Specific Rules**
+Example: `Jane.Doe+Work@gmail.com` → `janedoe@gmail.com`.
 
-   - Removes all periods (.) from the local part.
-   - For addresses containing a plus sign (+), removes the plus sign and all subsequent characters before the @ symbol.
-   - Example: `Jane.Doe+Work@gmail.com` → `janedoe@gmail.com`.
+### Phone
 
-4. **Domain Preservation**
-   - Maintains the original domain part without modification.
-   - Preserves all characters after the @ symbol.
+1. Remove spaces, dashes, and parentheses.
+2. Keep digits (and a leading `+` if present).
+3. Emit E.164-like form: `+` followed by digits.
+4. For Australian numbers starting with `61` and a trunk `0`, drop that trunk
+   zero (for example `6104…` → `+614…`).
 
-### Phone Number Normalization Rules
+The app does **not** invent a default country code such as `+1`.
 
-The application follows standard phone number normalization rules:
+### Hash outputs
 
-1. **Character Removal**
+| Form | Meaning |
+| ---- | ------- |
+| Hex | Lowercase hexadecimal encoding of the 32-byte SHA-256 digest |
+| Base64 | Standard Base64 encoding of the same 32 bytes |
 
-   - Removes all non-numeric characters (spaces, dashes, parentheses, etc.).
-   - Preserves only digits 0-9.
+## Requirements
 
-2. **Country Code Handling**
+- Node.js 22 or later
+- pnpm 11.8.0 (use Corepack)
 
-   - Ensures country code is present (defaults to +1 for US/Canada).
-   - Removes any '+' prefix from the country code.
-   - Example: `+1 (555) 123-4567` → `15551234567`.
-
-3. **Length Validation**
-   - Validates normalized phone number length (typically 10-15 digits).
-   - Ensures proper formatting for international numbers.
-
-### Hash Generation
-
-The application generates two types of hashes:
-
-1. **SHA-256 Hash**
-
-   - 64-character hexadecimal string.
-   - Generated from the normalized email address.
-   - Example: `b4c9a289323b21a01c3e940f150eb9b8c542587f1abfd8f0e1cc1ffc5e475514`.
-
-2. **Base64 Encoded Hash**
-   - 44-character string.
-   - Base64 encoding of the raw SHA-256 hash bytes.
-   - Example: `tMmiiTI7IaAcPpQPFQ65uMVCWH8av9jw4cwf/F5HVRQ=`.
-
-## Implementation Details
-
-### Dependencies
-
-- Node.js 22 or higher
-- pnpm 11.8.0 (via Corepack)
-
-## Installation
-
-1. Clone the repository:
+## Install and run
 
 ```bash
-git clone [your-repo-url]
-cd [your-repo-name]
-```
-
-2. Enable the pinned pnpm version and install dependencies:
-
-```bash
+git clone https://github.com/deangrant/dii-operator.git
+cd dii-operator
 corepack enable
 corepack prepare pnpm@11.8.0 --activate
 pnpm install
-```
-
-3. Start the development server:
-
-```bash
 pnpm dev
 ```
 
-4. Access the application at [http://localhost:5173](http://localhost:5173)
+Open [http://localhost:5173/dii-operator/](http://localhost:5173/dii-operator/).
+The app uses basename `/dii-operator` to match GitHub Pages.
 
-This repository is a pnpm workspace. The Vite + React app lives in `apps/web`; root scripts (`pnpm dev`, `pnpm build`, `pnpm start`) forward to that package. Use `pnpm start` (or `pnpm --filter web preview`) to serve a production build locally.
+Root scripts forward to `apps/web`:
+
+| Script | Action |
+| ------ | ------ |
+| `pnpm dev` | Vite development server |
+| `pnpm build` | Typecheck and production build → `apps/web/dist` |
+| `pnpm start` | Preview the production build |
 
 ## Usage
 
-### Input Processing
+### Single email or phone
 
-1. Enter an email address or phone number in the input field.
-2. The application automatically validates the input format.
-3. Click "Submit" to process the email address or phone number.
+1. Open **Email** or **Phone**.
+2. Enter a value and submit.
+3. Review normalized, hex, and Base64 outputs. Use the copy control on each
+   field.
 
-### Output Generation
+### CSV batch
 
-The application generates three outputs:
+1. Open **Batch**.
+2. Upload or drop a CSV with one column of emails and/or phones (at most 10,000
+   non-empty lines).
+3. Download `processed_data.csv` with columns Input, Normalized, SHA256, and
+   Base64. Skipped rows are counted in the UI.
 
-1. Normalized email address.
-2. SHA-256 hash (hexadecimal).
-3. Base64 encoded hash.
+## Deploy
 
-Each output can be copied to the clipboard using the copy button.
+CI builds with `pnpm build` and publishes `apps/web/dist` to GitHub Pages. The
+Vite `base` is `/dii-operator/`. The build also writes `404.html` so deep links
+work on Pages.
+
+## Further reading
+
+- [Architecture](.agents/docs/ARCHITECTURE.md) — system shape and module map
+- [AGENTS.md](AGENTS.md) — agent and contributor conventions
+- [DeepWiki](https://deepwiki.com/deangrant/dii-operator) — indexed project wiki
 
 ## License
 

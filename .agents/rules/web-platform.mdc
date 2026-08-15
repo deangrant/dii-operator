@@ -1,0 +1,20 @@
+---
+description: Vite, GitHub Pages, and pnpm workspace conventions for dii-operator
+alwaysApply: true
+---
+
+# Platform (Vite / Pages / pnpm)
+
+## Must
+
+- Keep the SPA under `apps/web` with Vite `base: "/dii-operator/"` and React Router basename `/dii-operator`.
+- Preserve the GitHub Pages SPA fallback (`404.html` copy from `index.html` in `vite.config.ts`).
+- Deploy artifact path is `apps/web/dist` (see `.github/workflows/publish.yml`).
+- Use pnpm `11.8.0` and Node `>=22`; add runtime deps via `catalog:` in `pnpm-workspace.yaml`.
+- Run app scripts with `pnpm --filter web …` or root forwards (`pnpm dev`, `pnpm build`, `pnpm start`).
+
+## Must not
+
+- Reintroduce Next.js, npm lockfiles, or `out/` as the Pages publish directory.
+- Change `base` / basename without updating both Vite and Router together.
+- Bypass the catalog with unpinned versions when adding shared deps.

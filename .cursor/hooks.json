@@ -1,5 +1,11 @@
 {
+  "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "command": "sh .agents/hooks/session-start.sh"
+      }
+    ],
     "afterFileEdit": [
       {
         "command": "sh .agents/hooks/biome-after-file-edit.sh"
@@ -8,6 +14,5 @@
         "command": "sh .agents/hooks/react-doctor-after-file-edit.sh"
       }
     ]
-  },
-  "version": 1
+  }
 }
