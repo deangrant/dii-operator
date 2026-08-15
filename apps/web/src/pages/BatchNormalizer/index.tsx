@@ -8,10 +8,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { saveAs } from "file-saver";
 import { useCallback, useRef, useState } from "react";
 import type { ProcessedData } from "@/types/csv";
 import { processCSV } from "@/utils/csv/process";
+import { downloadBlob } from "@/utils/download/blob";
 
 /**
  * Uploads a CSV of emails/phones, normalizes rows, and offers a hashed export.
@@ -71,7 +71,7 @@ export const BatchNormalizer = () => {
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
-    saveAs(blob, "processed_data.csv");
+    downloadBlob(blob, "processed_data.csv");
   }, [processedData]);
 
   const handleDragOver = useCallback((event: React.DragEvent) => {

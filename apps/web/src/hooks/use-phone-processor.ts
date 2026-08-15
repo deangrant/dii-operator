@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import type { PhoneHashResult } from "@/types/phone";
-import { generateBase64Hash, generateSha256Hash } from "@/utils/hash/generate";
+import { generateSha256Pair } from "@/utils/hash/generate";
 import { normalizePhone, validatePhone } from "@/utils/phone/normalize";
 
 /**
@@ -10,7 +10,7 @@ interface UsePhoneProcessorResult {
   clearResults: () => void;
   error: string;
   phoneNumber: string;
-  processPhone: () => void;
+  processPhone: () => Promise<void>;
   result: PhoneHashResult;
   setPhoneNumber: (phone: string) => void;
 }
@@ -18,11 +18,17 @@ interface UsePhoneProcessorResult {
 /**
  * Builds hash fields for a phone that has already been normalized.
  */
-const generatePhoneHashes = (normalizedPhone: string): PhoneHashResult => ({
-  base64Hash: generateBase64Hash(normalizedPhone),
-  normalizedPhone,
-  sha256Hash: generateSha256Hash(normalizedPhone),
-});
+const generatePhoneHashes = async (
+  normalizedPhone: string,
+): Promise<PhoneHashResult> => {
+  const { base64, sha256 } = await generateSha256Pair(normalizedPhone);
+
+  return {
+    base64Hash: base64,
+    normalizedPhone,
+    sha256Hash: sha256,
+  };
+};
 
 /**
  * Manages phone input state, validation, normalization, and hash generation.
@@ -36,7 +42,7 @@ export const usePhoneProcessor = (): UsePhoneProcessorResult => {
     sha256Hash: "",
   });
 
-  const processPhone = useCallback(() => {
+  const processPhone = useCallback(async () => {
     if (!phoneNumber) {
       return;
     }
@@ -50,7 +56,7 @@ export const usePhoneProcessor = (): UsePhoneProcessorResult => {
 
     setError("");
     const normalized = normalizePhone(phoneNumber);
-    setResult(generatePhoneHashes(normalized));
+    setResult(await generatePhoneHashes(normalized));
   }, [phoneNumber]);
 
   const clearResults = useCallback(() => {

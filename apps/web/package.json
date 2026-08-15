@@ -14,15 +14,11 @@
     "@fontsource/sora": "catalog:",
     "@mui/icons-material": "catalog:",
     "@mui/material": "catalog:",
-    "@types/file-saver": "catalog:",
-    "crypto-js": "catalog:",
-    "file-saver": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router-dom": "catalog:"
   },
   "devDependencies": {
-    "@types/crypto-js": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

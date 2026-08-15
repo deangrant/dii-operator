@@ -1,0 +1,20 @@
+---
+description: Prefer native platform APIs over utility libraries for web deps
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Prefer native JavaScript / Web APIs
+
+Minimize bundle size, attack surface, and maintenance cost. Reach for platform APIs before adding imports or changing dependencies.
+
+## Must
+
+- Prefer Web Crypto (`crypto.subtle`) for hashing and related crypto; do not add `crypto-js` or similar.
+- Prefer `URL.createObjectURL` + temporary `<a download>` (or the shared `utils/download/blob` helper) for file downloads; do not add `file-saver`.
+- Prefer built-ins (`fetch`, `URL`, `URLSearchParams`, `TextEncoder`/`TextDecoder`, `structuredClone`, etc.) over small utility packages when they cover the need.
+
+## Must not
+
+- Add a third-party dependency solely to wrap a one-liner platform API.
+- Reintroduce removed packages (`crypto-js`, `file-saver`) without a documented platform gap.
