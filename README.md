@@ -74,8 +74,8 @@ The application generates two types of hashes:
 
 ### Dependencies
 
-- Node.js (v14 or higher)
-- npm or yarn package manager
+- Node.js 22 or higher
+- pnpm 11.8.0 (via Corepack)
 
 ## Installation
 
@@ -86,23 +86,23 @@ git clone [your-repo-url]
 cd [your-repo-name]
 ```
 
-2. Install dependencies:
+2. Enable the pinned pnpm version and install dependencies:
 
 ```bash
-npm install
-# or
-yarn install
+corepack enable
+corepack prepare pnpm@11.8.0 --activate
+pnpm install
 ```
 
 3. Start the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+pnpm dev
 ```
 
-4. Access the application at [http://localhost:3000](http://localhost:3000)
+4. Access the application at [http://localhost:5173](http://localhost:5173)
+
+This repository is a pnpm workspace. The Vite + React app lives in `apps/web`; root scripts (`pnpm dev`, `pnpm build`, `pnpm start`) forward to that package. Use `pnpm start` (or `pnpm --filter web preview`) to serve a production build locally.
 
 ## Usage
 
