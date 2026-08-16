@@ -71,7 +71,7 @@ export const PhoneNumberNormalizer = () => {
           p: 3,
         }}
       >
-        <Stack alignItems="flex-start" direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: "flex-start" }}>
           <TextField
             error={!!error}
             fullWidth
