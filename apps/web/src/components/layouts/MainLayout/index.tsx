@@ -105,9 +105,13 @@ export const MainLayout = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary={item.label}
-                    primaryTypographyProps={{
-                      fontSize: "0.875rem",
-                      fontWeight: isActive ? 500 : 400,
+                    slotProps={{
+                      primary: {
+                        sx: {
+                          fontSize: "0.875rem",
+                          fontWeight: isActive ? 500 : 400,
+                        },
+                      },
                     }}
                   />
                 </ListItemButton>
