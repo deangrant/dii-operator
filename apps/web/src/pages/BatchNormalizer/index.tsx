@@ -25,6 +25,31 @@ export const BatchNormalizer = () => {
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const processUploadedFile = useCallback(async (file: File) => {
+    if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+      setError("Please upload a CSV file");
+      setProcessedData(null);
+      return;
+    }
+
+    setIsProcessing(true);
+    setError(null);
+    setProcessedData(null);
+
+    try {
+      const result = await processCSV(file);
+      setProcessedData(result);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while processing the file",
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
   const handleFileUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -32,30 +57,9 @@ export const BatchNormalizer = () => {
         return;
       }
 
-      if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
-        setError("Please upload a CSV file");
-        setProcessedData(null);
-        return;
-      }
-
-      setIsProcessing(true);
-      setError(null);
-      setProcessedData(null);
-
-      try {
-        const result = await processCSV(file);
-        setProcessedData(result);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "An error occurred while processing the file",
-        );
-      } finally {
-        setIsProcessing(false);
-      }
+      await processUploadedFile(file);
     },
-    [],
+    [processUploadedFile],
   );
 
   const handleDownload = useCallback(() => {
@@ -89,23 +93,9 @@ export const BatchNormalizer = () => {
         return;
       }
 
-      if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
-        setError("Please upload a CSV file");
-        setProcessedData(null);
-        return;
-      }
-
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
-
-      if (fileInputRef.current) {
-        fileInputRef.current.files = dataTransfer.files;
-        handleFileUpload({
-          target: { files: dataTransfer.files },
-        } as React.ChangeEvent<HTMLInputElement>);
-      }
+      processUploadedFile(file);
     },
-    [handleFileUpload],
+    [processUploadedFile],
   );
 
   const handleBrowseClick = useCallback(() => {
