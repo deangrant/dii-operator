@@ -21,7 +21,7 @@ catalog:
   react-router-dom: 7.18.2
   typescript: 7.0.2
   ultracite: 7.9.4
-  vite: 8.1.5
+  vite: 8.2.0
 
 # Fail install when the current Node/pnpm version is outside package.json
 # engines. Documents intent; without this, engines is advisory only.
