@@ -73,8 +73,23 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Read catalog react-doctor version
+        id: catalog
+        run: |
+          version="$(node -e '
+            const text = require("fs").readFileSync("pnpm-workspace.yaml", "utf8");
+            const match = text.match(/^\s*react-doctor:\s*([^\s#]+)/m);
+            if (!match) {
+              console.error("react-doctor missing from pnpm-workspace.yaml catalog");
+              process.exit(1);
+            }
+            process.stdout.write(match[1]);
+          ')"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
       - name: Run React Doctor
         uses: millionco/react-doctor@01820bb4fd4d0a4aebcd8df2b2a143a098649cb2
         with:
-          version: "0.9.1"
+          version: ${{ steps.catalog.outputs.version }}
           blocking: error
+          node-version: "22"
