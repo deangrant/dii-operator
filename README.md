@@ -61,7 +61,7 @@ The app does **not** invent a default country code such as `+1`.
 ## Requirements
 
 - Node.js 22 or later
-- pnpm 11.8.0 (use Corepack)
+- pnpm 12.5.1 (use Corepack)
 
 ## Install and run
 
@@ -69,7 +69,7 @@ The app does **not** invent a default country code such as `+1`.
 git clone https://github.com/deangrant/dii-operator.git
 cd dii-operator
 corepack enable
-corepack prepare pnpm@11.8.0 --activate
+corepack prepare pnpm@12.5.1 --activate
 pnpm install
 pnpm dev
 ```
